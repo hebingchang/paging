@@ -45,7 +45,12 @@ func (s *GORMStore) PaginateOffset(limit, offset int64, count *int64) error {
 	q := s.db
 	q = q.Limit(int(limit))
 	q = q.Offset(int(offset))
-	q = q.Find(s.items)
+
+
+	if q = q.Find(s.items); q.Error != nil {
+		return q.Error
+	}
+
 	q = q.Limit(-1)
 	q = q.Offset(-1)
 
